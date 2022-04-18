@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+    
+stages{
+    stage('Git-checkout') {
+        steps {
+            git branch: 'master', url: 'https://github.com/DavidSanchez2000/movie-analyst-ui'
+        }
+        
+    }
+    
+    stage('Build') {
+        steps {
+            sh 'docker build -t app_front:latest . '
+            sh 'docker tag ramp-up davidsanchez21/app_front:latest'
+            //sh 'docker tag ramp-up davidsanchez21/app_front:$BUILD_NUMBER'
+        }
+    }
+    
+    stage('Publish image') {
+        steps {
+            withDockerRegistry ([credentialsId: "dockerHub", url: "" ]) {
+                sh 'docker push davidsanchez21/app_front:latest'
+                //sh 'docker push davidsanchez21/app_front:$BUILD_NUMBER'
+            }
+        }
+    }
+    stage('Deploy in remote host') {
+        steps {
+            sh 'docker -H ssh://frontend1@10.0.1.1 run -d -p 3030:3030 davidsanchez21/app_front'
+        }
+    }
+}
