@@ -7,7 +7,7 @@ WORKDIR /movie-analyst-ui
 COPY . .
 #COPY package*.json ./
 EXPOSE 3030
-#ENV BACKEND_URL=http://10.0.3.3
+ENV BACKEND_URL=backend:3000
 RUN npm install 
 
 
