@@ -5,7 +5,7 @@ const mysql = require('mysql')
 const util = require('util')
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || '10.200.48.2',
+  host: process.env.DB_HOST || '10.254.48.36',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || 'admin',
   database: process.env.DB_NAME || 'movie_db'
@@ -49,7 +49,7 @@ app.get('/publications', async function (req, res) {
 app.get('/pending', async function (req, res) {
   try {
     const rows = await pool.query(
-      'select m.title, m.release, m.score, r.name as reviewer, p.name as publication' +
+      'select m.title, m.release_year, m.score, r.name as reviewer, p.name as publication' +
       'from movie_db.movies m, movie_db.reviewers r, movie_db.publications p where' +
       'r.publication=p.name and m.reviewer=r.name and m.release>=2017'
     )
