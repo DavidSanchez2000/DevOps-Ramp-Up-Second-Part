@@ -14,4 +14,3 @@ RUN npm install
 #COPY . .
 CMD [ "node", "/movie-analyst-api/server.js" ]
 #CMD ["npm", "start"]
- 
